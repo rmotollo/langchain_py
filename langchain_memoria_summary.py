@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import SimpleSequentialChain, LLMChain, ConversationChain
 from langchain.globals import set_debug
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationSummaryMemory
 from operator import itemgetter
 import os
 from dotenv import load_dotenv
@@ -29,7 +29,7 @@ mensagens = [
         "Na primeira cidade que você sugeriu lá atrás, quero saber 5 restaurantes para visitar. Responda somente o nome da cidade e o nome dos restaurantes.",
 ]
 
-memory = ConversationBufferMemory()
+memory = ConversationSummaryMemory(llm=llm)
 conversation = ConversationChain(llm=llm,
                                  memory=memory,
                                  verbose=True)
@@ -39,3 +39,4 @@ conversation = ConversationChain(llm=llm,
 for mensagem in mensagens:
     resposta = conversation.predict(input = mensagem)
     print(resposta)
+print(memory.load_memory_variables({}))
